@@ -1,0 +1,194 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOdd0xbYZRsY4s1tzB4eCLa",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Vikaas232/Python-Programming-Machine-Learning/blob/main/Data%20Wrangling%202\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "qyq5LZ9G7jeA",
+        "outputId": "e24c75da-e44d-4de6-af2a-8aadc8b3ae49"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Original DataFrame:\n",
+            "           Name  Age Gender Marks\n",
+            "0          Sai   20      M    90\n",
+            "1      Yuvasri   18      F    76\n",
+            "2    Poovannan   19      M   NaN\n",
+            "3    Sabharish   20      M    74\n",
+            "4  Sangamithra   18      F    65\n",
+            "5      Rithika   17      F   NaN\n",
+            "6      Rubasri   19      F    71\n",
+            "\n",
+            "Replacing NaN with average marks:\n",
+            "           Name  Age Gender  Marks\n",
+            "0          Sai   20      M   90.0\n",
+            "1      Yuvasri   18      F   76.0\n",
+            "2    Poovannan   19      M   75.2\n",
+            "3    Sabharish   20      M   74.0\n",
+            "4  Sangamithra   18      F   65.0\n",
+            "5      Rithika   17      F   75.2\n",
+            "6      Rubasri   19      F   71.0\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/tmp/ipykernel_955/2477769110.py:19: FutureWarning: Downcasting behavior in `replace` is deprecated and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`\n",
+            "  df=df.replace(to_replace=\"NaN\",value=avg)\n"
+          ]
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "#Assign data\n",
+        "data={'Name':['Sai','Yuvasri','Poovannan','Sabharish','Sangamithra','Rithika','Rubasri'],\n",
+        "      'Age':[20,18,19,20,18,17,19],\n",
+        "      'Gender':['M','F','M','M','F','F','F'],\n",
+        "      'Marks':[90,76,'NaN',74,65,'NaN',71]}\n",
+        "#Convert into DataFrame\n",
+        "df=pd.DataFrame(data)\n",
+        "#Display data\n",
+        "print(\"Original DataFrame:\\n\",df)\n",
+        "#Convert average\n",
+        "c=avg=0\n",
+        "for ele in df['Marks']:\n",
+        "  if str(ele).isnumeric():\n",
+        "    c+=1\n",
+        "    avg+=ele\n",
+        "avg/=c\n",
+        "#Replace missing values\n",
+        "df=df.replace(to_replace=\"NaN\",value=avg)\n",
+        "#Display data\n",
+        "print(\"\\nReplacing NaN with average marks:\\n\",df)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Filtering top scoring students\n",
+        "df=df[df['Marks']>=75]\n",
+        "#Remove age row\n",
+        "df=df.drop(['Age'],axis=1, errors='ignore')\n",
+        "#Display data\n",
+        "print(\"\\nFiltering and Dropping func:\\n\",df)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "LZTzlUCL9lFT",
+        "outputId": "9b210e7e-8ae4-4f91-b3a2-c34b528251c5"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Filtering and Dropping func:\n",
+            "         Name Gender  Marks\n",
+            "0        Sai      M   90.0\n",
+            "1    Yuvasri      F   76.0\n",
+            "2  Poovannan      M   75.2\n",
+            "5    Rithika      F   75.2\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "one=pd.DataFrame({\n",
+        "    'Name':['Sai','Sub','Poo','Yuvasri','Rithika'],\n",
+        "    'subject_id':['sub1','sub2','sub4','sub6','sub5'],\n",
+        "    'Marks_scored':[98,95,9,92,88]},\n",
+        "     index=[1,2,3,4,5])\n",
+        "two=pd.DataFrame({\n",
+        "    'Name':['Sanjay','Sangamithra','Rubasri','Nikesh','Somanath'],\n",
+        "    'subject_id':['sub2','sub4','sub3','sub6','sub5'],\n",
+        "    'Marks_scored':[86,95,87,99,91]},\n",
+        "     index=[1,2,3,4,5])\n",
+        "print(\"\\nOriginal DataFrame 1:\\n\",one)\n",
+        "print(\"\\nOriginal DataFrame 2:\\n\",two)\n",
+        "print(pd.concat([one,two]))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "eSp6SzyY-iJ2",
+        "outputId": "b0f52201-10f6-423c-e087-de416321e99b"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Original DataFrame 1:\n",
+            "       Name subject_id  Marks_scored\n",
+            "1      Sai       sub1            98\n",
+            "2      Sub       sub2            95\n",
+            "3      Poo       sub4             9\n",
+            "4  Yuvasri       sub6            92\n",
+            "5  Rithika       sub5            88\n",
+            "\n",
+            "Original DataFrame 2:\n",
+            "           Name subject_id  Marks_scored\n",
+            "1       Sanjay       sub2            86\n",
+            "2  Sangamithra       sub4            95\n",
+            "3      Rubasri       sub3            87\n",
+            "4       Nikesh       sub6            99\n",
+            "5     Somanath       sub5            91\n",
+            "          Name subject_id  Marks_scored\n",
+            "1          Sai       sub1            98\n",
+            "2          Sub       sub2            95\n",
+            "3          Poo       sub4             9\n",
+            "4      Yuvasri       sub6            92\n",
+            "5      Rithika       sub5            88\n",
+            "1       Sanjay       sub2            86\n",
+            "2  Sangamithra       sub4            95\n",
+            "3      Rubasri       sub3            87\n",
+            "4       Nikesh       sub6            99\n",
+            "5     Somanath       sub5            91\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
